@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Listado de Personas</title>
+</h:head>
+<h:body>
+	<!-- IMPORTAMOS LA PLANTILLA PARA SOBREESCRIBIR LOS BLOQUES -->
+	<ui:composition
+		template="/WEB-INF/views/plantilla/plantillaAdmin.xhtml">
+		<!-- FIN IMPORTACION -->
+		<ui:define name="content">
+			<!-- USO DEL BLOQUE -->
+
+		
+				<p:growl id="growl" sticky="true" showDetail="true" life="3000" />
+				<p:ajaxStatus style="width: 16px;height: 16px;" id="ajaxStatusPanel">
+					<f:facet name="start">
+						<h:graphicImage library="images" name="ajaxloading.gif" />
+					</f:facet>
+
+					<f:facet name="complete">
+						<h:outputText value="" />
+					</f:facet>
+
+				</p:ajaxStatus>
+				<div class="ui-g" id="idPagoEmp1">
+					<div class="ui-g-12" style="text-align:center;" id="idPagoEmp2">
+						<div class="ui-g-1"></div>
+						<div class="ui-g-2" style="text-align: right;">
+							<h:outputText value="BUSCAR" />
+						</div>
+						<div class="ui-g-4">
+						    <p:inputText class="form-control" value="" placeholder="buscar empleado..."/>
+						</div>
+						<div class="ui-g-4">
+						<h:form id="form1">
+				            <p:selectOneMenu id="idEmpleadoSel" value="#{pagoBean.idEmpSel}" style="width:150px"
+				           					converter ="javax.faces.Integer">
+				           		<f:ajax event="change" listener="#{pagoBean.onEmpleadoChange}"></f:ajax>
+<!-- 				               <p:ajax listener="#{pagoBean.onEmpleadoChange}" /> -->
+				                <f:selectItem itemLabel="Seleccione empleado" itemValue="" noSelectionOption="true" />
+				                <f:selectItem itemLabel="Jose Roberto" itemValue="1" />	
+				            </p:selectOneMenu>
+			            </h:form>
+						</div>
+						<div class="ui-g-1"></div>
+					</div>				
+				</div>
+				<h:form id="form2">
+				      <div class="ui-g" id="_idPagoEmp2">															
+							<div class="ui-g-12" style="text-align:center;">										
+								<div class="ui-g-1"></div>
+								<div class="ui-g-5">
+									<div class="ui-g-6" style="text-align: left"><h:outputLabel for="Monto" value="MONTO" /></div>
+									<div class="ui-g-6"><p:inputText id="monto" value="" required="true" label="monto" placeholder="Digitar monto "/></div>
+									<div class="ui-g-6" style="text-align: left;"><h:outputLabel for="isr" value="IMPUESTO SOBRE LA RENTA" /></div>
+									<div class="ui-g-6"><p:inputText id="isr" value="" required="true" label="isr" placeholder="Digitar isr"/></div>												
+								</div>
+								<div class="ui-g-5">
+									<div class="ui-g-6" style="text-align: left;"><h:outputLabel for="pension" value="MONTO PENSION " /></div>
+									<div class="ui-g-6"><p:inputText id="pension" value="" required="true" label="pension" placeholder="Digite monto pensión"/></div>
+									<div class="ui-g-6" style="text-align: left;"><h:outputLabel for="isss" value="ISSS" /></div>
+									<div class="ui-g-6"><p:inputText id="isss" value="" required="true" label="isss" placeholder="Digite monto isss"/></div>
+									<div class="ui-g-12"></div>
+																						
+								</div>
+								<div class="ui-g-1"></div>
+								<div class="ui-g-12" style="text-align:center;">
+											<p:commandButton value="Guardar" update="growl" />										
+								</div>
+							</div><!-- ESTE ES CIERRE DEL FORMULARIO -->		                
+			          </div>
+               </h:form>
+		 </ui:define>
+	</ui:composition>
+</h:body>
+</html>

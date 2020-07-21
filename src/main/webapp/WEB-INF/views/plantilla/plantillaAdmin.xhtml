@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Sistema de administracion de empleados</title>
+</h:head>
+
+<h:body>
+<style type="text/css">
+     .ui-g div {
+	background-color: #00000;
+	text-align: center;
+	border: 1px solid #fafafa;
+    }
+
+</style>
+	<div class="ui-g">
+		<!-- 		<div class="ui-g-12 ui-md-2" style="background-color:#D7FCEF;">Menu</div> -->
+		<div class="ui-g-12 ui-md-12 ui-g-nopad">
+			<div class="ui-g-12" style="background-color: #D7FCEF;">
+				<h:form>
+					<p:growl id="messages" />
+
+					<p:menubar style="background-color:#D7FCEF;">
+						<p:submenu label="Empleados" icon="pi pi-file">
+							<p:menuitem value="Listado de empleados"  action="#{menuBean.listadoEmpleados}"  icon="pi pi-angle-double-left" />
+						</p:submenu>
+
+						<p:submenu label="Catalogos" icon="pi pi-pencil">
+							<p:menuitem value="Tipo de Empleado" action="#{menuBean.listaTipoEmpleados}" icon="pi pi-angle-double-left" />
+							<p:menuitem value="Tipo pension" action="#{menuBean.listaTipoPensiones}" icon="pi pi-angle-double-right" />
+						</p:submenu>
+
+						<p:submenu label="Pagos" icon="pi pi-question">
+							<p:menuitem value="Pago normal" action="#{menuBean.pagoNormal}" icon="pi pi-angle-double-left" />
+							<p:menuitem value="Aguinaldo" action="#{menuBean.pagoAguinaldo}" icon="pi pi-angle-double-right" />
+							<p:menuitem value="Bonos" action="#{menuBean.bonificacion}" icon="pi pi-angle-double-right" />
+							<p:menuitem value="Pago especial" action="#{menuBean.pagoEspecial}" icon="pi pi-angle-double-riht"/>
+						</p:submenu>
+
+						<p:submenu label="Reportes" icon="pi pi-cog">
+							<p:menuitem value="CSV" url="#" icon="pi pi-angle-double-left" />
+							<p:menuitem value="Excel" url="#" icon="pi pi-angle-double-right" />
+
+						</p:submenu>
+				        <f:facet name="options">
+				            <p:inputText style="margin:1px 10px 1px 1px;" placeholder="Search"/>	
+							<p:commandButton value="Salir" actionListener="#{login.logout}" action="/login" >
+							</p:commandButton> 
+				        </f:facet>
+					</p:menubar>
+					<h:messages />
+				</h:form>
+			</div>
+			<div class="ui-g-12 ui-g-nopad">
+				<div class="ui-g">
+					<div class="ui-g-12 ui-md-12">	
+					 <h:outputText value="Bienvenid@"/>					
+						<!-- Aqui el cuerpo de trabajo -->
+					 <ui:insert name="content">Contenido</ui:insert>	 
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr />
+
+	</div>
+	
+</h:body>
+</html>

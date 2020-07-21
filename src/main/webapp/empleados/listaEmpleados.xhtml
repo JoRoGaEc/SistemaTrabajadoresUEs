@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Listado de Personas</title>
+    </h:head>
+    <h:body>
+    <!-- IMPORTAMOS LA PLANTILLA PARA SOBREESCRIBIR LOS BLOQUES -->
+    <ui:composition template="/WEB-INF/views/plantilla/plantillaAdmin.xhtml">
+    <!-- FIN IMPORTACION -->
+    <ui:define name="content"> <!-- USO DEL BLOQUE -->
+    
+        <p:ajaxStatus style="width: 16px;height: 16px;" id="ajaxStatusPanel">
+            <f:facet name="start">
+                <h:graphicImage library="images" name="ajaxloading.gif" />
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+
+        </p:ajaxStatus>
+
+        <h:form id="empleadosListForm">
+            <p:growl id="messages" showDetail="true" />
+            <p:messages/>
+
+            <p:dataTable id="empleadosDataTable" value="#{empleadoBean.empleados}" var="empleado" 
+            			 editable="true" rowKey="#{empleado.id}" selection="#{empleadoBean.empleadoSeleccionado}" 
+            			 selectionMode="single"  style="background-color: #D7FCEF;" rows="10" paginator="true">
+
+                <f:facet name="header">
+                    Listado de Empleados
+
+                </f:facet>
+                
+                <p:column headerText="Id"  style="width: 50px" >
+                    <h:outputText value="#{empleado.id}" />
+                </p:column>
+
+                <p:column headerText="Nombre" filterBy="#{empleado.nombre}">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{empleado.nombre}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{empleado.nombre}" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Apellido" filterBy="#{empleado.apellido}">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{empleado.apellido}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{empleado.apellido}" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Nit" filterBy="#{empleado.nit}">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{empleado.nit}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputMask id="nit" value="#{empleado.nit}" mask="9999-999999-999-9"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+<!--                 <p:column headerText="Tipo Empleado" filterBy="#{empleado.tipoEmpleado.id}"> -->
+<!--                     <p:cellEditor> -->
+<!--                         <f:facet name="output"> -->
+<!--                             <h:outputText value="#{empleado.tipoEmpleado.id}" converter="#{javax.faces.Integer}"/> -->
+<!--                         </f:facet> -->
+<!--                         <f:facet name="input"> -->
+<!--                             <p:inputText id="tipoEmpleado" converter="#{javax.faces.Integer}" value="#{empleado.tipoEmpleado.id}"/> -->
+<!--                         </f:facet> -->
+<!--                     </p:cellEditor> -->
+<!--                 </p:column> -->
+
+
+                <f:facet name="footer">
+                    <p:commandButton value="Regresar" action="index" />
+                    <p:spacer height="5px"/>
+                    <p:commandButton value="Agregar" actionListener="#{empleadoBean.reiniciarEmpleadoSeleccionado}"
+                                     update=":dialogForm" oncomplete="PF('empleadoDialog').show()" />
+                </f:facet>
+
+                <p:column headerText="Opciones " style="width: 50px">
+                    <p:rowEditor/>
+                </p:column>
+
+                <p:ajax event="rowEdit" listener="#{empleadoBean.editListener}"/>
+
+            </p:dataTable>
+            
+            <p:contextMenu for="empleadosDataTable">
+                <p:menuitem value="Eliminar" update="empleadosListForm:empleadosDataTable" icon="ui-icon-close" 
+                            actionListener="#{empleadoBean.eliminarEmpleado}" />
+            </p:contextMenu>
+
+        </h:form>
+
+        <p:dialog id="empleadoDlg" widgetVar="empleadoDialog" header="Agregar empleado" modal="true" showEffect="fade" hideEffect="fade" 
+            resizable="false" >
+            <h:form id="dialogForm">
+                <p:outputPanel id="empleadoDetail" style="text-align: center;">
+                    <p:panelGrid id="display" columns="4" columnClasses="label, value" >
+                        <h:outputText value="Nombre" />
+                        <h:inputText value="#{empleadoBean.empleadoSeleccionado.nombre}" />
+                        
+                        <h:outputText value="Apellido" />
+                        <h:inputText value="#{empleadoBean.empleadoSeleccionado.apellido}" />
+                        
+                        <h:outputText value="Nit" />
+                        <p:inputMask id="nit" value="#{empleadoBean.empleadoSeleccionado.nit}" mask="9999-999999-999-9"/>
+  				        
+  				        <p:outputLabel for="@next" value="Tipo Empleados: " />
+				        <p:selectOneMenu id="tipo" value="#{empleadoBean.idTipoEmpleado}" 
+				        				 effect="fold" editable="true" converter="javax.faces.Integer">
+				        				 
+				            <f:selectItem itemLabel=" Seleccionar " itemValue="" />
+				            <f:selectItems value="#{empleadoBean.tipoEmpleados}" var="objeto" itemLabel="#{objeto.codigo}" 
+				            			   itemValue="#{objeto.id}">
+<!-- 				            <f:convertNumber integerOnly="true"/> -->
+				            </f:selectItems>
+				        </p:selectOneMenu>  
+				          
+				        <p:outputLabel for="@next" value = "Tipo pension :"/>
+				        <p:selectOneMenu id ="tipoPension" value = "#{empleadoBean.idTipoPension}"
+				        				 effect="fold" editable ="true" converter = "javax.faces.Integer"> <!-- Este convertira el valor del atributo itemValue -->				        	
+				        	<f:selectItem itemLabel = "Seleccionar " itemValue=""/>
+				        	<f:selectItems value = "#{empleadoBean.tipoPensiones}" var="pension" itemLabel ="#{pension.nombre}"
+				        					itemValue="#{pension.id}">
+				        	</f:selectItems>
+				        </p:selectOneMenu>				        
+
+				                                 				
+                        <f:facet name="footer" >
+                            <p:commandButton value="Agregar" actionListener="#{empleadoBean.agregarEmpleado}" 
+                                             update="display,:empleadosListForm:empleadosDataTable" oncomplete="PF('empleadoDialog').hide();" />
+                        </f:facet>
+                    </p:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>  
+     </ui:define>
+  </ui:composition> 
+    </h:body>
+</html>

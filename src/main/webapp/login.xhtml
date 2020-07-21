@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+	<title>Página de inicio</title>
+</h:head>
+
+<h:body>
+	<style type="text/css">
+.ui-g div {
+	background-color: #00000;
+	text-align: center;
+	border: 1px solid #fafafa;
+}
+</style>
+	<div class="ui-g">
+		<!-- 		<div class="ui-g-12 ui-md-2" style="background-color:#D7FCEF;">Menu</div> -->
+		<div class="ui-g-12 ui-g-nopad">
+			<div class="ui-g">
+				<div class="ui-g-12 ui-md-12">
+					<h:form id="form">
+						<br />
+						<br />
+						<p:growl id="messages" showDetail="true" sticky="true" />
+						
+
+						<h:outputText value="GESTION EMPLEADOS UES"></h:outputText>
+						<br />
+						<br />
+						<h:outputText for="nombre" value="Usuario"></h:outputText>
+						<br />
+						<p:inputText id="nombre" 
+							required="true" value="#{login.user}"/> <!-- value="#{usuarioBean.usuario.nombre}" -->
+						<br />
+						<h:outputText for="clave" value="Contraseña"></h:outputText>
+						<br />
+						<p:password id="clave" 
+							required="true" value="#{login.pwd}"/> <!-- value="#{usuarioBean.usuario.clave}" -->
+						<br />
+						<br />
+						<br />
+						<p:commandButton icon="ui-icon-key" action="#{login.validateUsernamePassword}"
+			               value="Login"  /> <!-- action="#{usuarioBean.iniciarSesion()}" -->
+			               <br />
+					    <h:outputLabel value="#{login.mensajeCredencial}" />
+					</h:form>
+					
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui-g-12" align="center">SOEMA Systems S.A de C.V </div>
+   <!-- (Software Empresarial a la Medida) -->
+</h:body>
+</html>

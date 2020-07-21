@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Tipo de empleados</title>
+    </h:head>
+    <h:body>
+    <!-- IMPORTAMOS LA PLANTILLA PARA SOBREESCRIBIR LOS BLOQUES -->
+    <ui:composition template="/WEB-INF/views/plantilla/plantillaAdmin.xhtml">
+    <!-- FIN IMPORTACION -->
+    <ui:define name="content"> <!-- USO DEL BLOQUE -->
+    
+        <p:ajaxStatus style="width: 16px;height: 16px;" id="ajaxStatusPanel">
+            <f:facet name="start">
+                <h:graphicImage library="images" name="ajaxloading.gif" />
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+
+        </p:ajaxStatus>
+
+        <h:form id="tipoPensionesListForm">
+            <p:growl id="messages" showDetail="true" />
+            <p:messages/>
+
+            <p:dataTable id="tipoPensionesDataTable" value="#{tipoPensionBean.tipoPensiones}" var="tipoPension" 
+            			 editable="true" rowKey="#{tipoPension.id}" selection="#{tipoPensionBean.tipoPensionSeleccionada}" 
+            			 selectionMode="single"  style="background-color: #D7FCEF;" rows="10" paginator="true">
+
+                <f:facet name="header">
+                    Listado de Tipo de pensiones
+
+                </f:facet>
+                
+                <p:column headerText="Id"  style="width: 50px" >
+                    <h:outputText value="#{tipoPension.id}" />
+                </p:column>
+
+                <p:column headerText="Nombre" filterBy="#{tipoPension.nombre}">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{tipoPension.nombre}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{tipoPension.nombre}" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Codigo" filterBy="#{tipoPension.codigo}">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{tipoPension.codigo}" />
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{tipoPension.codigo}" />
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <f:facet name="footer">
+                    <p:commandButton value="Regresar" action="index" />
+                    <p:spacer height="5px"/>
+                    <p:commandButton value="Agregar" actionListener="#{tipoPensionBean.reiniciarTipoPensionSeleccionada}"
+                                     update=":dialogForm" oncomplete="PF('tipoPensionDialog').show()" />
+                </f:facet>
+
+                <p:column headerText="Opciones " style="width: 50px">
+                    <p:rowEditor/>
+                </p:column>
+
+                <p:ajax event="rowEdit" listener="#{tipoPensionBean.editListener}"/>
+
+            </p:dataTable>
+            
+            <p:contextMenu for="tipoPensionesDataTable">
+                <p:menuitem value="Eliminar" update="tipoPensionesListForm:tipoPensionesDataTable" icon="ui-icon-close" 
+                            actionListener="#{tipoPensionBean.eliminarTipoPension}" />
+            </p:contextMenu>
+
+        </h:form>
+
+        <p:dialog id="tipoPensionDlg" widgetVar="tipoPensionDialog" header="Agregar tipo pension" modal="true" showEffect="fade" hideEffect="fade" 
+            resizable="false" >
+            <h:form id="dialogForm">
+                <p:outputPanel id="tipoEmpleadoDetail" style="text-align: center">
+                    <p:panelGrid id="display" columns="4" columnClasses="label, value" >
+                        <h:outputText value="Nombre" />
+                        <h:inputText value="#{tipoPensionBean.tipoPensionSeleccionada.nombre}" />
+                        
+                        <h:outputText value="Codigo" />
+                        <h:inputText value="#{tipoPensionBean.tipoPensionSeleccionada.codigo}" />
+                                   
+                        <f:facet name="footer" >
+                            <p:commandButton value="Agregar" actionListener="#{tipoPensionBean.agregarTipoPension}" 
+                                             update="display,:tipoPensionesListForm:tipoPensionesDataTable" oncomplete="PF('tipoPensionDialog').hide();" />
+                        </f:facet>
+                    </p:panelGrid>
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>  
+     </ui:define>
+  </ui:composition> 
+    </h:body>
+</html>
